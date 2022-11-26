@@ -4,12 +4,14 @@
     v-else
     :data="data"
     :fetchData="fetchData"
-    :system="system"
     :plusDay="plusDay"
     :changeDay="changeDay"
   >
-    <div v-for="asteroid in data" :key="asteroid.id">
-      <Asteroid :asteroid="asteroid" :system="system" />
+    <form>
+      <input type="text" placeholder="Search an asteroid by name" v-model="searchQuery" />
+    </form>
+    <div v-for="asteroid in filteredData" :key="asteroid.id">
+      <Asteroids :asteroid="asteroid" />
     </div>
   </Layout>
 </template>
@@ -17,78 +19,66 @@
 <script>
 import { onMounted, ref } from "vue";
 import { addDays } from "date-fns";
+import { computed } from "vue";
 import Loading from "../components/Loading.vue";
 import Layout from "../components/Layout.vue";
-import Asteroid from "../components/Asteroid.vue";
-
+import Asteroids from "../components/Asteroids.vue";
 export default {
   components: {
     Loading,
     Layout,
-    Asteroid,
+    Asteroids,
   },
   setup() {
     const API_KEY = "Kzb0E64htPxZGEM33UC62hrug7mfHAzEzIH8Qyu1";
     let data = ref([]);
     let isLoading = ref(false);
-    let system = ref("imperial");
     let plusDay = ref(0);
-
+    const searchQuery = ref("");
     onMounted(() => {
-      fetchData(system.value);
+      fetchData(data.value);
     });
-
     const fetchData = (type) => {
       isLoading.value = true;
-      system.value = type;
+      data.value = type;
       fetch(
         `https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=${API_KEY}`
       )
         .then((res) => res.json())
         .then((res) => {
-          let fetchedData = res.near_earth_objects[getDate()]
-            .sort(
-              (a, b) =>
-                a.close_approach_data[0].epoch_date_close_approach -
-                b.close_approach_data[0].epoch_date_close_approach
-            )
-            .filter(
-              (asteroid) =>
-                asteroid.close_approach_data[0].epoch_date_close_approach > new Date()
-            );
-
-          const hazards = fetchedData.reduce((acc, curr) => {
-            if (curr.is_potentially_hazardous_asteroid) {
-              return acc + 1;
-            }
-            return acc;
-          }, 0);
-          hazards
-            ? (document.title = `${hazards} Potential Hazards ⚠️ - Near Earth Asteroids`)
-            : (document.title = "Near Earth Asteroids");
-
+          let fetchedData = res.near_earth_objects[getDate()];
           data.value = fetchedData;
           isLoading.value = false;
-        });
+        })
+        .catch(() =>
+          alert(
+            "Sorry, we can't load the asteroids data. Please try again later or check your internet connection"
+          )
+        );
     };
 
     const getDate = () => {
-      return `${addDays(new Date(), plusDay.value).toISOString().substr(0, 10)}`;
+      return `${addDays(new Date(), plusDay.value).toISOString().substring(0, 10)}`;
     };
-    console.log(getDate());
 
     const changeDay = (day) => {
       plusDay.value += day;
-      fetchData(system.value);
+      fetchData(data.value);
     };
 
+    const filteredData = computed(() => {
+      return data.value.filter((asteroid) => {
+        return asteroid.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1;
+      });
+    });
     return {
       data,
       isLoading,
       fetchData,
-      system,
       plusDay,
       changeDay,
+      filteredData,
+      searchQuery,
     };
   },
 };
@@ -98,6 +88,7 @@ export default {
 :root {
   --primary: #fff;
   --secondary: #d6a505;
+  --hr: #838485;
   --background: #000;
   --red: red;
 }
@@ -107,7 +98,6 @@ html {
   background-repeat: repeat, no-repeat;
   background-size: auto, cover;
   background-position: center, center;
-  min-height: 100%;
   background-color: var(--background);
 }
 
@@ -116,12 +106,9 @@ body {
   max-width: 42em;
   margin: 0 auto;
   padding: 12px 20px 0 20px;
-  font-family: Ubuntu Mono, Menlo, Consolas, Monaco, Liberation Mono, Lucida Console,
-    monospace;
-  font-size: 20px;
+  font-family: Ubuntu Mono;
+  font-size: 18px;
   color: var(--primary);
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary) var(--background);
 }
 
 a {
@@ -129,8 +116,54 @@ a {
 }
 
 hr {
-  border: 0;
-  border-bottom: 4px solid var(--secondary);
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  margin: 2.5em 0;
+  position: relative;
+}
+
+hr:before,
+hr:after {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  height: 5em;
+  width: 100%;
+  background: radial-gradient(
+    ellipse at bottom,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  z-index: 0;
+}
+
+hr:after {
+  top: 0px;
+  bottom: auto;
+  height: 1.5em;
+  background: radial-gradient(
+    ellipse at top,
+    rgba(0, 0, 0, 0.06) 0%,
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+form {
+  text-align: right;
+}
+
+input[type="text"] {
+  border: none;
+  height: 30px;
+  width: 200px;
+  outline: none;
+  border: 3px solid var(--secondary);
+  border-radius: 35px;
+  color: black;
+  font-size: 14px;
+  font-weight: 200;
+  text-align: center;
 }
 
 @media (max-width: 600px) {

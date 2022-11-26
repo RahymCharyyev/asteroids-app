@@ -1,8 +1,6 @@
 <template>
   <h2>{{ title }}</h2>
-  <h3>
-    {{ subtitle }}
-  </h3>
+  <h3>{{ subtitle }}</h3>
   <hr />
   <slot></slot>
   <footer>
@@ -31,7 +29,7 @@ export default {
       ${data.length} Near Misses`
     );
 
-    const footerName = `© ${new Date().getFullYear()} developed by RC`;
+    const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 
     return {
       title,
@@ -48,6 +46,11 @@ export default {
 .buttons {
   display: flex;
   justify-content: space-between;
+}
+
+h2,
+h3 {
+  text-align: center;
 }
 
 button {
