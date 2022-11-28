@@ -4,11 +4,6 @@
   <hr />
   <slot></slot>
   <footer>
-    <p class="buttons">
-      <button @click="changeDay(-1)" v-if="plusDay">← Previous Day</button>
-      <span v-else></span>
-      <button @click="changeDay(+1)">Next Day →</button>
-    </p>
     <p>{{ footerName }}</p>
   </footer>
 </template>
@@ -18,17 +13,14 @@ import { format, addDays } from "date-fns";
 import { computed } from "vue";
 
 export default {
-  props: ["data", "fetchData", "plusDay", "changeDay", "searchQuery"],
-  setup({ fetchData, data, plusDay, changeDay, searchQuery }) {
-    const title = computed(
-      () => `${format(addDays(new Date(), plusDay), "EEEE d-MMM")},`
-    );
+  props: ["data", "fetchData"],
+  setup({ fetchData, data }) {
+    const title = computed(() => `Hello`);
 
     const subtitle = computed(
       () => `There Will Be
       ${data.length} Near Misses`
     );
-    // console.log(searchQuery.value);
 
     const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 
@@ -37,8 +29,6 @@ export default {
       subtitle,
       footerName,
       fetchData,
-      changeDay,
-      searchQuery,
     };
   },
 };
