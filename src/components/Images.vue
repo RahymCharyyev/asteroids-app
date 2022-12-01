@@ -1,36 +1,59 @@
 <template>
-  <h2>
+  <h2 class="title">
     {{ image.title }}
   </h2>
-  <p>{{ image.date }}</p>
-  <p>{{ image.copyright }}</p>
-  <div>
-    <img :src="image.url" alt="Astronomy image of the day" />
+  <p class="copyright">{{ image.copyright }}</p>
+  <div class="imgWrapper">
+    <img
+      class="img"
+      :class="{ big: bigImg }"
+      :src="image.url"
+      alt="Astronomy image of the day"
+      @click="bigImg = !bigImg"
+    />
   </div>
-  <p>{{ image.explanation }}</p>
+  <p class="text">{{ image.explanation }}</p>
   <hr />
 </template>
 
 <script>
+import { ref } from "vue";
 export default {
   props: ["image"],
-  setup() {},
+  setup() {
+    let bigImg = ref(false);
+    return {
+      bigImg,
+    };
+  },
 };
 </script>
 
 <style scoped>
-p,
-h2 {
+.title,
+.copyright {
   text-align: center;
 }
 
-div {
+.imgWrapper {
   display: flex;
   justify-content: center;
 }
 
-img {
+.img {
   width: 50%;
   height: 50%;
+  cursor: pointer;
+  transition: 1.5s;
+}
+
+.big {
+  width: 100%;
+  height: auto;
+  transition: 1.5s;
+}
+
+.text {
+  text-align: justify;
 }
 </style>

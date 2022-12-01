@@ -1,6 +1,6 @@
 <template>
-  <h1>THE NASA API project</h1>
-  <p>
+  <h1 class="title">THE NASA API project</h1>
+  <p class="text">
     The National Aeronautics and Space Administration (NASA /ˈnæsə/) is an independent
     agency of the US federal government responsible for the civil space program,
     aeronautics research, and space research. NASA was established in 1958, succeeding the
@@ -19,8 +19,32 @@
     and pictures of the space captured by the NASA satellites. Check other pages for more
     information.
   </p>
+  <hr />
+  <p class="footer">{{ footerName }}</p>
 </template>
 
-<script></script>
+<script>
+import { computed } from "vue";
+export default {
+  setup() {
+    const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
+    return {
+      footerName,
+    };
+  },
+};
+</script>
 
-<style scoped></style>
+<style scoped>
+.title {
+  text-align: center;
+}
+
+.text {
+  text-align: justify;
+}
+
+.footer {
+  text-align: center;
+}
+</style>

@@ -2,17 +2,21 @@
   <h2>
     {{ asteroid.name }}
   </h2>
-  <p><strong>ID:</strong> {{ asteroid.neo_reference_id }}</p>
+  <p><strong class="name">ID:</strong> {{ asteroid.neo_reference_id }}</p>
   <p>
-    <strong>Is Potentially Hazardous?</strong>
+    <strong class="name">Is Potentially Hazardous?</strong>
     <span class="hazard" v-if="asteroid.is_potentially_hazardous_asteroid">YES</span>
     <span class="no_hazard" v-else>No</span>
   </p>
-  <p><strong>Relative Velocity:</strong> {{ relativeVelocity(asteroid) }}</p>
-  <p><strong>Absolute Magnitude:</strong> {{ asteroid.absolute_magnitude_h }}</p>
-  <p><strong>Estimated Diameter:</strong> {{ estimatedDiameter(asteroid) }}</p>
+  <p><strong class="name">Relative Velocity:</strong> {{ relativeVelocity(asteroid) }}</p>
   <p>
-    <strong>Close approach date:</strong>
+    <strong class="name">Absolute Magnitude:</strong> {{ asteroid.absolute_magnitude_h }}
+  </p>
+  <p>
+    <strong class="name">Estimated Diameter:</strong> {{ estimatedDiameter(asteroid) }}
+  </p>
+  <p>
+    <strong class="name">Close approach date:</strong>
     {{ asteroid.close_approach_data[0].close_approach_date_full }}
   </p>
   <hr />
@@ -52,7 +56,7 @@ export default {
   padding: 2px 10px;
 }
 
-strong {
+.name {
   color: var(--secondary);
 }
 </style>

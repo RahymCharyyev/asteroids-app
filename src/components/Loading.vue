@@ -1,10 +1,11 @@
 <template>
-  <h1 class="loading">Loading...</h1>
-  <h2>Please wait while we are getting the data from NASA servers.</h2>
+  <h1 class="title">Loading...</h1>
+  <h2 class="subtitle">Please wait while we are getting the data from NASA servers.</h2>
 </template>
 
 <style scoped>
-.loading {
+.title,
+.subtitle {
   text-align: center;
 }
 </style>
