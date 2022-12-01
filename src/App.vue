@@ -6,7 +6,7 @@
   </nav>
   <router-view />
 </template>
-
+<script></script>
 <style>
 :root {
   --primary: #fff;
@@ -17,10 +17,9 @@
 }
 
 html {
-  background-image: url(./assets/bg.jpg);
+  background-image: url(./assets/bg.webp), url(./assets/bg.jpg);
   background-repeat: repeat, no-repeat;
   background-size: auto, cover;
-  background-position: center, center;
   background-color: var(--background);
 }
 
