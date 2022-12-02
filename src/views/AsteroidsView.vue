@@ -15,9 +15,13 @@
         v-model="searchQuery"
       />
     </div>
-    <div v-for="asteroid in filteredData" :key="asteroid.id">
+    <button @click="filterByDate">Filter by date</button>
+    <div v-for="asteroid in filterByDate" :key="asteroid.id">
       <Asteroids :asteroid="asteroid" />
     </div>
+    <!-- <div v-for="asteroid in filteredData" :key="asteroid.id">
+      <Asteroids :asteroid="asteroid" />
+    </div> -->
   </AsteroidLayout>
 </template>
 
@@ -76,6 +80,14 @@ export default {
         return asteroid.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1;
       });
     });
+    const filterByDate = computed(() => {
+      return data.value.sort((a, b) => {
+        return (
+          a.close_approach_data[0].close_approach_date_full -
+          b.close_approach_data[0].close_approach_date_full
+        );
+      });
+    });
     return {
       data,
       isLoading,
@@ -84,6 +96,7 @@ export default {
       changeDay,
       filteredData,
       searchQuery,
+      filterByDate,
     };
   },
 };

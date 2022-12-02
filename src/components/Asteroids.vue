@@ -34,7 +34,7 @@ export default {
       `${asteroid.estimated_diameter.meters.estimated_diameter_min.toFixed(
         2
       )} - ${asteroid.estimated_diameter.meters.estimated_diameter_max.toFixed(2)} m`;
-
+    console.log(asteroid.close_approach_data[0].close_approach_date_full.slice(12, 17));
     return {
       estimatedDiameter,
       relativeVelocity,
