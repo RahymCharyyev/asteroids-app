@@ -7,21 +7,21 @@
     :plusDay="plusDay"
     :changeDay="changeDay"
   >
-    <div class="inputWrapper">
-      <input
-        type="text"
-        class="search"
-        placeholder="Search an asteroid by name"
-        v-model="searchQuery"
-      />
-    </div>
-    <button @click="filterByDate">Filter by date</button>
-    <div v-for="asteroid in filterByDate" :key="asteroid.id">
+    <input
+      type="text"
+      class="search"
+      placeholder="Search an asteroid by name"
+      v-model="searchQuery"
+    />
+    <button class="button" @click="sortedById = !sortedById" ref="buttonText">
+      <!-- {{ buttonText }} -->
+    </button>
+    <div v-if="!sortedByDate" v-for="asteroid in data" :key="asteroid.id">
       <Asteroids :asteroid="asteroid" />
     </div>
-    <!-- <div v-for="asteroid in filteredData" :key="asteroid.id">
+    <div v-else v-for="asteroid in filteredData" :key="asteroid.name">
       <Asteroids :asteroid="asteroid" />
-    </div> -->
+    </div>
   </AsteroidLayout>
 </template>
 
@@ -40,13 +40,17 @@ export default {
   },
   setup() {
     const API_KEY = "Kzb0E64htPxZGEM33UC62hrug7mfHAzEzIH8Qyu1";
-    let data = ref([]);
-    let isLoading = ref(false);
-    let plusDay = ref(0);
-    let searchQuery = ref("");
+    const data = ref([]);
+    const isLoading = ref(false);
+    const sortedByDate = ref(true);
+    const sortedById = ref(true);
+    const plusDay = ref(0);
+    const searchQuery = ref("");
+    const buttonText = ref("Filter by date");
     onMounted(() => {
       fetchData(data.value);
     });
+
     const fetchData = (type) => {
       isLoading.value = true;
       data.value = type;
@@ -74,19 +78,29 @@ export default {
       plusDay.value += day;
       fetchData(data.value);
     };
-
-    const filteredData = computed(() => {
-      return data.value.filter((asteroid) => {
-        return asteroid.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1;
-      });
-    });
-    const filterByDate = computed(() => {
-      return data.value.sort((a, b) => {
-        return (
-          a.close_approach_data[0].close_approach_date_full -
-          b.close_approach_data[0].close_approach_date_full
-        );
-      });
+    let filteredData = computed(() => {
+      filteredData = data.value;
+      if (sortedByDate.value) {
+        filteredData.sort((a, b) => {
+          return (
+            Date.parse(new Date(a.close_approach_data[0].close_approach_date_full)) -
+            Date.parse(new Date(b.close_approach_data[0].close_approach_date_full))
+          );
+        });
+      }
+      if (sortedById.value) {
+        filteredData.sort((a, b) => {
+          return a.id - b.id;
+        });
+      }
+      if (searchQuery.value !== "") {
+        filteredData.filter((asteroid) => {
+          return (
+            asteroid.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1
+          );
+        });
+      }
+      return filteredData;
     });
     return {
       data,
@@ -96,18 +110,18 @@ export default {
       changeDay,
       filteredData,
       searchQuery,
-      filterByDate,
+      sortedByDate,
+      sortedById,
+      buttonText,
     };
   },
 };
 </script>
 
 <style scoped>
-.inputWrapper {
-  text-align: right;
-}
-
 .search {
+  position: relative;
+  left: 72%;
   border: none;
   height: 30px;
   width: 200px;
@@ -118,5 +132,22 @@ export default {
   font-size: 14px;
   font-weight: 200;
   text-align: center;
+}
+
+.button {
+  position: relative;
+  right: 27%;
+  height: 35px;
+  width: 150px;
+  font-size: 14px;
+  outline: none;
+  border: 3px solid var(--primary);
+  border-radius: 35px;
+  color: var(--primary);
+  background-color: var(--secondary);
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 20px;
 }
 </style>
