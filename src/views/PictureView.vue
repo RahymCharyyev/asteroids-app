@@ -33,7 +33,7 @@ export default {
         })
         .catch(() =>
           alert(
-            "Sorry, we can't load the asteroids data. Please try again later or check your internet connection"
+            "Sorry, we can't load the data from API. Please, try again later or check your internet connection"
           )
         );
     };
@@ -56,6 +56,4 @@ export default {
   },
 };
 </script>
-<style>
-
-</style>
+<style></style>

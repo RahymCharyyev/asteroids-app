@@ -17,17 +17,16 @@ import { format, addDays } from "date-fns";
 import { computed } from "vue";
 
 export default {
-  props: ["data", "fetchData", "plusDay", "changeDay", "searchQuery"],
-  setup({ fetchData, data, plusDay, changeDay, searchQuery }) {
+  props: ["data", "fetchData", "plusDay", "changeDay", "searchQuery", "arrayLength"],
+  setup({ fetchData, data, plusDay, changeDay, searchQuery, arrayLength }) {
     const title = computed(
       () => `${format(addDays(new Date(), plusDay), "EEEE d-MMM")},`
     );
 
     const subtitle = computed(
       () => `There Will Be
-      ${data.length} Near Misses`
+      ${arrayLength} Near Misses`
     );
-    // console.log(searchQuery.value);
 
     const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 
@@ -38,6 +37,7 @@ export default {
       fetchData,
       changeDay,
       searchQuery,
+      arrayLength,
     };
   },
 };

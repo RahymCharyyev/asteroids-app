@@ -1,20 +1,23 @@
 <template>
   <Loading v-if="isLoading" />
+
   <AsteroidLayout
     v-else
     :data="data"
     :fetchData="fetchData"
     :plusDay="plusDay"
     :changeDay="changeDay"
+    :arrayLength="arrayLength"
   >
+    <h1>{{ arrayLength }}</h1>
     <input
       type="text"
       class="search"
       placeholder="Search an asteroid by name"
       v-model="searchQuery"
     />
-    <button class="button" @click="sortedById = !sortedById" ref="buttonText">
-      <!-- {{ buttonText }} -->
+    <button class="button" @click="(sortedById = !sortedById), changeText">
+      {{ buttonText ? "Filter by ID" : "Filter by date" }}
     </button>
     <div v-if="!sortedByDate" v-for="asteroid in data" :key="asteroid.id">
       <Asteroids :asteroid="asteroid" />
@@ -44,9 +47,10 @@ export default {
     const isLoading = ref(false);
     const sortedByDate = ref(true);
     const sortedById = ref(true);
+    const buttonText = ref(false);
     const plusDay = ref(0);
     const searchQuery = ref("");
-    const buttonText = ref("Filter by date");
+
     onMounted(() => {
       fetchData(data.value);
     });
@@ -65,7 +69,7 @@ export default {
         })
         .catch(() =>
           alert(
-            "Sorry, we can't load the asteroids data. Please try again later or check your internet connection"
+            "Sorry, we can't load the data from API. Please, try again later or check your internet connection"
           )
         );
     };
@@ -78,10 +82,15 @@ export default {
       plusDay.value += day;
       fetchData(data.value);
     };
-    let filteredData = computed(() => {
-      filteredData = data.value;
+
+    const changeText = computed(() => {
+      if (sortedByDate.value) buttonText.value = true;
+      if (sortedById.value) buttonText.value = false;
+    });
+    const filteredData = computed(() => {
+      let modifiedData = data.value;
       if (sortedByDate.value) {
-        filteredData.sort((a, b) => {
+        modifiedData.sort((a, b) => {
           return (
             Date.parse(new Date(a.close_approach_data[0].close_approach_date_full)) -
             Date.parse(new Date(b.close_approach_data[0].close_approach_date_full))
@@ -89,18 +98,22 @@ export default {
         });
       }
       if (sortedById.value) {
-        filteredData.sort((a, b) => {
+        modifiedData.sort((a, b) => {
           return a.id - b.id;
         });
       }
       if (searchQuery.value !== "") {
-        filteredData.filter((asteroid) => {
+        modifiedData = modifiedData.filter((asteroid) => {
           return (
             asteroid.name.toLowerCase().indexOf(searchQuery.value.toLowerCase()) != -1
           );
         });
       }
-      return filteredData;
+      return modifiedData;
+    });
+
+    const arrayLength = computed(() => {
+      return filteredData.value.length;
     });
     return {
       data,
@@ -113,6 +126,8 @@ export default {
       sortedByDate,
       sortedById,
       buttonText,
+      changeText,
+      arrayLength,
     };
   },
 };
@@ -126,12 +141,13 @@ export default {
   height: 30px;
   width: 200px;
   outline: none;
-  border: 3px solid var(--secondary);
+  border: 3px solid var(--primary);
   border-radius: 35px;
   color: black;
   font-size: 14px;
   font-weight: 200;
   text-align: center;
+  transition: 0.3s;
 }
 
 .button {
@@ -141,7 +157,7 @@ export default {
   width: 150px;
   font-size: 14px;
   outline: none;
-  border: 3px solid var(--primary);
+  border: 3px solid var(--secondary);
   border-radius: 35px;
   color: var(--primary);
   background-color: var(--secondary);
@@ -149,5 +165,16 @@ export default {
   text-align: center;
   cursor: pointer;
   margin-right: 20px;
+  transition: 0.3s;
+}
+
+.button:hover {
+  font-size: 16px;
+  border: 3px solid var(--primary);
+}
+
+.search:hover,
+.search:focus {
+  border: 3px solid var(--secondary);
 }
 </style>
