@@ -1,6 +1,5 @@
 <template>
   <Loading v-if="isLoading" />
-
   <AsteroidLayout
     v-else
     :data="data"
@@ -9,7 +8,6 @@
     :changeDay="changeDay"
     :arrayLength="arrayLength"
   >
-    <h1>{{ arrayLength }}</h1>
     <input
       type="text"
       class="search"
@@ -50,7 +48,6 @@ export default {
     const buttonText = ref(false);
     const plusDay = ref(0);
     const searchQuery = ref("");
-
     onMounted(() => {
       fetchData(data.value);
     });
@@ -87,6 +84,7 @@ export default {
       if (sortedByDate.value) buttonText.value = true;
       if (sortedById.value) buttonText.value = false;
     });
+
     const filteredData = computed(() => {
       let modifiedData = data.value;
       if (sortedByDate.value) {
@@ -109,24 +107,26 @@ export default {
           );
         });
       }
+
       return modifiedData;
     });
 
     const arrayLength = computed(() => {
       return filteredData.value.length;
     });
+
     return {
       data,
       isLoading,
       fetchData,
       plusDay,
       changeDay,
+      changeText,
+      buttonText,
       filteredData,
       searchQuery,
       sortedByDate,
       sortedById,
-      buttonText,
-      changeText,
       arrayLength,
     };
   },

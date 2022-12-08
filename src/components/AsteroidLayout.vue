@@ -1,6 +1,7 @@
 <template>
   <h2 class="title">{{ title }}</h2>
-  <h3 class="subtitle">{{ subtitle }}</h3>
+  <h3 class="subtitle">There Will Be {{ arrayLength }} Near Misses</h3>
+
   <hr />
   <slot></slot>
   <footer>
@@ -17,27 +18,20 @@ import { format, addDays } from "date-fns";
 import { computed } from "vue";
 
 export default {
-  props: ["data", "fetchData", "plusDay", "changeDay", "searchQuery", "arrayLength"],
-  setup({ fetchData, data, plusDay, changeDay, searchQuery, arrayLength }) {
+  props: ["fetchData", "plusDay", "changeDay", "searchQuery", "arrayLength"],
+  setup({ fetchData, plusDay, changeDay, searchQuery }) {
     const title = computed(
       () => `${format(addDays(new Date(), plusDay), "EEEE d-MMM")},`
-    );
-
-    const subtitle = computed(
-      () => `There Will Be
-      ${arrayLength} Near Misses`
     );
 
     const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 
     return {
       title,
-      subtitle,
       footerName,
       fetchData,
       changeDay,
       searchQuery,
-      arrayLength,
     };
   },
 };

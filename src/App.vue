@@ -1,8 +1,8 @@
 <template>
   <nav>
-    <router-link to="/">About project</router-link> |
-    <router-link to="/asteroids">Asteroids Near Earth</router-link> |
-    <router-link to="/picture">Astronomy Picture of the Day</router-link>
+    <router-link to="/">About project</router-link>
+    <router-link to="/asteroids">Asteroids Near Earth</router-link>
+    <router-link to="/picture">Picture of the Day</router-link>
   </nav>
   <router-view />
 </template>
@@ -21,6 +21,7 @@ html {
   background-repeat: repeat, no-repeat;
   background-size: auto, cover;
   background-color: var(--background);
+  width: 100%;
 }
 
 body {
@@ -80,6 +81,8 @@ nav a {
   font-weight: bold;
   color: var(--primary);
   text-decoration: none;
+  margin-left: 20px;
+  cursor: pointer;
 }
 
 nav a.router-link-exact-active {
