@@ -9,7 +9,7 @@
       <button class="button" @click="changeDay(-1)">← Previous Day</button>
       <button class="button" @click="changeDay(+1)">Next Day →</button>
     </div>
-    <p class="footer">{{ footerName }}</p>
+    <a href="https://github.com/RahymCharyyev" class="footer">{{ footerName }}</a>
   </footer>
 </template>
 
@@ -66,8 +66,16 @@ export default {
 }
 
 .footer {
+  display: block;
   color: var(--primary);
-  font-weight: 500;
+  font-weight: 600;
+  text-decoration: none;
   text-align: center;
+  margin: 20px 0 20px 0;
+  transition: 0.3s;
+}
+
+.footer:hover {
+  color: var(--secondary);
 }
 </style>

@@ -55,5 +55,6 @@ export default {
 
 .text {
   text-align: justify;
+  text-indent: 25px;
 }
 </style>

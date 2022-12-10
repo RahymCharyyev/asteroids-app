@@ -83,11 +83,16 @@ nav a {
   text-decoration: none;
   margin-left: 20px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 nav a.router-link-exact-active {
   color: var(--secondary);
   text-decoration: none;
+}
+
+nav a:hover {
+  color: var(--secondary);
 }
 
 @media (max-width: 600px) {

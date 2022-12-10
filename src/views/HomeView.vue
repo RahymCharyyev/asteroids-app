@@ -14,13 +14,13 @@
     for the Launch Services Program, which provides oversight of launch operations and
     countdown management for uncrewed NASA launches.
   </p>
-  <p>
+  <p class="text">
     This project was developed using vue js. It includes the information about asteroids
     and pictures of the space captured by the NASA satellites. Check other pages for more
     information.
   </p>
   <hr />
-  <p class="footer">{{ footerName }}</p>
+  <a href="https://github.com/RahymCharyyev" class="footer">{{ footerName }}</a>
 </template>
 
 <script>
@@ -42,9 +42,20 @@ export default {
 
 .text {
   text-align: justify;
+  text-indent: 25px;
 }
 
 .footer {
+  display: block;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
   text-align: center;
+  margin: 20px 0 20px 0;
+  transition: 0.3s;
+}
+
+.footer:hover {
+  color: var(--secondary);
 }
 </style>
