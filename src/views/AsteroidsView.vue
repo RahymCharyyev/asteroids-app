@@ -2,7 +2,6 @@
   <Loading v-if="isLoading" />
   <AsteroidLayout
     v-else
-    :data="data"
     :fetchData="fetchData"
     :plusDay="plusDay"
     :changeDay="changeDay"
@@ -14,10 +13,10 @@
       placeholder="Search an asteroid by name"
       v-model="searchQuery"
     />
-    <button class="button" @click="(sortedById = !sortedById), changeText">
-      {{ buttonText ? "Filter by ID" : "Filter by date" }}
+    <button class="button" @click="sortedByDate = !sortedByDate">
+      {{ sortedByDate ? "Filter by ID" : "Filter by date" }}
     </button>
-    <div v-if="!sortedByDate" v-for="asteroid in data" :key="asteroid.id">
+    <div v-if="!sortedByDate" v-for="asteroid in filteredData" :key="asteroid.id">
       <Asteroids :asteroid="asteroid" />
     </div>
     <div v-else v-for="asteroid in filteredData" :key="asteroid.name">
@@ -43,9 +42,7 @@ export default {
     const API_KEY = "Kzb0E64htPxZGEM33UC62hrug7mfHAzEzIH8Qyu1";
     const data = ref([]);
     const isLoading = ref(false);
-    const sortedByDate = ref(true);
-    const sortedById = ref(true);
-    const buttonText = ref(false);
+    const sortedByDate = ref(false);
     const plusDay = ref(0);
     const searchQuery = ref("");
     onMounted(() => {
@@ -80,11 +77,6 @@ export default {
       fetchData(data.value);
     };
 
-    const changeText = computed(() => {
-      if (sortedByDate.value) buttonText.value = true;
-      if (sortedById.value) buttonText.value = false;
-    });
-
     const filteredData = computed(() => {
       let modifiedData = data.value;
       if (sortedByDate.value) {
@@ -95,7 +87,7 @@ export default {
           );
         });
       }
-      if (sortedById.value) {
+      if (!sortedByDate.value) {
         modifiedData.sort((a, b) => {
           return a.id - b.id;
         });
@@ -107,7 +99,6 @@ export default {
           );
         });
       }
-
       return modifiedData;
     });
 
@@ -121,12 +112,9 @@ export default {
       fetchData,
       plusDay,
       changeDay,
-      changeText,
-      buttonText,
       filteredData,
       searchQuery,
       sortedByDate,
-      sortedById,
       arrayLength,
     };
   },

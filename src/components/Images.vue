@@ -21,7 +21,7 @@ import { ref } from "vue";
 export default {
   props: ["image"],
   setup() {
-    let bigImg = ref(false);
+    const bigImg = ref(false);
     return {
       bigImg,
     };
