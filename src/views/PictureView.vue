@@ -19,7 +19,7 @@ onMounted(() => {
 });
 const fetchData = () => {
   isLoading.value = true;
-  fetch(`https://api.nasa.gov/planetary/apod?api_key=${API_KEY}`)
+  fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.VUE_APP_API_KEY}`)
     .then((res) => res.json())
     .then((res) => {
       let fetchedData = res;

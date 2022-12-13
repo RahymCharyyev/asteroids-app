@@ -14,7 +14,10 @@
       v-model="searchQuery"
     />
     <button class="button" @click="sortedByDate = !sortedByDate">
-      {{ sortedByDate ? "Sort by ID" : "Sort by date" }}
+      {{ sortedByDate ? "Sort by Velocity" : "Sort by date" }}
+    </button>
+    <button class="button" @click="sortedByHazard = !sortedByHazard">
+      {{ sortedByHazard ? "Reset to all" : "Show Hazardous" }}
     </button>
     <div v-for="asteroid in filteredData" :key="asteroid.id">
       <Asteroids :asteroid="asteroid" />
@@ -29,20 +32,22 @@ import { computed } from "vue";
 import Loading from "../components/Loading.vue";
 import AsteroidLayout from "../components/AsteroidLayout.vue";
 import Asteroids from "../components/Asteroids.vue";
-
-const API_KEY = "Kzb0E64htPxZGEM33UC62hrug7mfHAzEzIH8Qyu1";
 const data = ref([]);
 const isLoading = ref(false);
 const sortedByDate = ref(false);
+const sortedByHazard = ref(false);
 const plusDay = ref(0);
 const searchQuery = ref("");
 onMounted(() => {
   fetchData(data.value);
 });
-
 const fetchData = () => {
   isLoading.value = true;
-  fetch(`https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=${API_KEY}`)
+  fetch(
+    `https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=${
+      process.env.VUE_APP_API_KEY
+    }`
+  )
     .then((res) => res.json())
     .then((res) => {
       let fetchedData = res.near_earth_objects[getDate()];
@@ -77,7 +82,15 @@ const filteredData = computed(() => {
   }
   if (!sortedByDate.value) {
     modifiedData.sort((a, b) => {
-      return a.id - b.id;
+      return (
+        a.close_approach_data[0].relative_velocity.kilometers_per_hour -
+        b.close_approach_data[0].relative_velocity.kilometers_per_hour
+      );
+    });
+  }
+  if (sortedByHazard.value) {
+    modifiedData = modifiedData.filter((asteroid) => {
+      return asteroid.is_potentially_hazardous_asteroid;
     });
   }
   if (searchQuery.value !== "") {
