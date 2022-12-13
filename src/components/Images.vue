@@ -16,17 +16,12 @@
   <hr />
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
-export default {
-  props: ["image"],
-  setup() {
-    const bigImg = ref(false);
-    return {
-      bigImg,
-    };
-  },
-};
+const props = defineProps({
+  image: {},
+});
+const bigImg = ref(false);
 </script>
 
 <style scoped>

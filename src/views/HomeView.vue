@@ -23,16 +23,9 @@
   <a href="https://github.com/RahymCharyyev" class="footer">{{ footerName }}</a>
 </template>
 
-<script>
+<script setup>
 import { computed } from "vue";
-export default {
-  setup() {
-    const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
-    return {
-      footerName,
-    };
-  },
-};
+const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 </script>
 
 <style scoped>

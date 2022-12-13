@@ -2,7 +2,6 @@
   <h2>
     {{ asteroid.name }}
   </h2>
-  <p><strong class="name">ID:</strong> {{ asteroid.neo_reference_id }}</p>
   <p>
     <strong class="name">Is Potentially Hazardous?</strong>
     <span class="hazard" v-if="asteroid.is_potentially_hazardous_asteroid">YES</span>
@@ -22,25 +21,18 @@
   <hr />
 </template>
 
-<script>
-export default {
-  props: ["asteroid"],
-  setup({ asteroid }) {
-    const relativeVelocity = (asteroid) =>
-      `${Number(
-        asteroid.close_approach_data[0].relative_velocity.kilometers_per_hour
-      ).toFixed(0)} km/h`;
-    const estimatedDiameter = (asteroid) =>
-      `${asteroid.estimated_diameter.meters.estimated_diameter_min.toFixed(
-        2
-      )} - ${asteroid.estimated_diameter.meters.estimated_diameter_max.toFixed(2)} m`;
-    return {
-      estimatedDiameter,
-      relativeVelocity,
-      asteroid,
-    };
-  },
-};
+<script setup>
+const props = defineProps({
+  asteroid: {},
+});
+const relativeVelocity = (asteroid) =>
+  `${Number(
+    asteroid.close_approach_data[0].relative_velocity.kilometers_per_hour
+  ).toFixed(0)} km/h`;
+const estimatedDiameter = (asteroid) =>
+  `${asteroid.estimated_diameter.meters.estimated_diameter_min.toFixed(
+    2
+  )} - ${asteroid.estimated_diameter.meters.estimated_diameter_max.toFixed(2)} m`;
 </script>
 
 <style scoped>

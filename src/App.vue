@@ -6,7 +6,6 @@
   </nav>
   <router-view />
 </template>
-<script></script>
 <style>
 :root {
   --primary: #fff;

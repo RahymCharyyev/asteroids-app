@@ -8,25 +8,18 @@
   </footer>
 </template>
 
-<script>
+<script setup>
 import { format, addDays } from "date-fns";
 import { computed } from "vue";
-
-export default {
-  props: ["fetchData", "plusDay"],
-  setup({ fetchData, plusDay }) {
-    const title = computed(() => `${format(addDays(new Date(), plusDay), "EEEE d-MMM")}`);
-    const subtitle = computed(() => `*You can click on image to view it on actual size`);
-    const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
-
-    return {
-      title,
-      subtitle,
-      footerName,
-      fetchData,
-    };
-  },
-};
+const props = defineProps({
+  plusDay: Number,
+  fetchData: {},
+});
+const title = computed(
+  () => `${format(addDays(new Date(), props.plusDay), "EEEE d-MMM")}`
+);
+const subtitle = computed(() => `*You can click on image to view it on actual size`);
+const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 </script>
 
 <style scoped>
