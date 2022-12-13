@@ -10,7 +10,6 @@ import { onMounted, ref } from "vue";
 import Loading from "../components/Loading.vue";
 import Images from "../components/Images.vue";
 import PictureLayout from "../components/PictureLayout.vue";
-const API_KEY = "Kzb0E64htPxZGEM33UC62hrug7mfHAzEzIH8Qyu1";
 let data = ref([]);
 let plusDay = ref(0);
 let isLoading = ref(false);
@@ -19,7 +18,9 @@ onMounted(() => {
 });
 const fetchData = () => {
   isLoading.value = true;
-  fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.VUE_APP_API_KEY}`)
+  // Sign up to https://api.nasa.gov/ to get full access to API via API KEY
+  // fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.VUE_APP_API_KEY}`)
+  fetch(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY`)
     .then((res) => res.json())
     .then((res) => {
       let fetchedData = res;
@@ -33,4 +34,6 @@ const fetchData = () => {
     );
 };
 </script>
-<style></style>
+<style>
+
+</style>
