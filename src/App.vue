@@ -95,6 +95,18 @@ nav a:hover {
   color: var(--secondary);
 }
 
+@media (max-width: 650px) {
+  nav {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  nav a {
+    margin-top: 5px;
+  }
+}
+
 @media (max-width: 600px) {
   body {
     font-size: 16px;
@@ -105,16 +117,6 @@ nav a:hover {
 @media (max-width: 450px) {
   body {
     font-size: 14px;
-  }
-
-  nav {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
-  nav a {
-    margin-top: 5px;
   }
 }
 </style>

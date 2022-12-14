@@ -20,7 +20,8 @@ const footer = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 </script>
 
 <style scoped>
-.title {
+.title,
+.subtitle {
   text-align: center;
 }
 
