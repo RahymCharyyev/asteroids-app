@@ -7,16 +7,6 @@
   <router-view />
 </template>
 <style>
-@font-face {
-  font-family: "Ubuntu Mono";
-  font-weight: 400;
-  font-style: normal;
-  font-display: auto;
-  unicode-range: U+000-5FF;
-  src: local("Ubuntu Mono"), url("../fonts/UbuntuMono-Regular.ttf") format("ttf"),
-    url("../fonts/UbuntuMono-Bold.ttf") format("ttf");
-}
-
 :root {
   --primary: #fff;
   --secondary: #d6a505;
