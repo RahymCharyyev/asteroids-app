@@ -1,10 +1,10 @@
 <template>
   <h2 class="title">{{ title }}</h2>
-  <p class="subtitle">{{ subtitle }}</p>
+  <p class="subtitle">* You can click on image to view it on actual size</p>
   <hr />
   <slot></slot>
   <footer>
-    <a href="https://github.com/RahymCharyyev" class="footer">{{ footerName }}</a>
+    <a href="https://github.com/RahymCharyyev" class="footer">{{ footer }}</a>
   </footer>
 </template>
 
@@ -16,13 +16,11 @@ const props = defineProps({
   fetchData: {},
 });
 const title = computed(() => `${format(new Date(), "EEEE d-MMM")}`);
-const subtitle = computed(() => `* You can click on image to view it on actual size`);
-const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
+const footer = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 </script>
 
 <style scoped>
-.title,
-.subtitle {
+.title {
   text-align: center;
 }
 

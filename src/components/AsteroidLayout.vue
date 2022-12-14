@@ -8,7 +8,7 @@
       <button class="button" @click="changeDay(-1)">← Previous Day</button>
       <button class="button" @click="changeDay(+1)">Next Day →</button>
     </div>
-    <a href="https://github.com/RahymCharyyev" class="footer">{{ footerName }}</a>
+    <a href="https://github.com/RahymCharyyev" class="footer">{{ footer }}</a>
   </footer>
 </template>
 
@@ -25,7 +25,7 @@ const props = defineProps({
 const title = computed(
   () => `${format(addDays(new Date(), props.plusDay), "EEEE d-MMM")},`
 );
-const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
+const footer = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 </script>
 
 <style scoped>

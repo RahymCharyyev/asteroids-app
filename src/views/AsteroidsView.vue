@@ -1,12 +1,6 @@
 <template>
   <Loading v-if="isLoading" />
-  <AsteroidLayout
-    v-else
-    :fetchData="fetchData"
-    :plusDay="plusDay"
-    :changeDay="changeDay"
-    :arrayLength="arrayLength"
-  >
+  <AsteroidLayout v-else :fetchData="fetchData" :plusDay="plusDay" :changeDay="changeDay" :arrayLength="arrayLength">
     <div class="container">
       <button class="button" @click="sortedByDate = !sortedByDate">
         {{ sortedByDate ? "Sort by Velocity" : "Sort by date" }}
@@ -14,12 +8,7 @@
       <button class="button" @click="sortedByHazard = !sortedByHazard">
         {{ sortedByHazard ? "Reset to all" : "Show Hazardous" }}
       </button>
-      <input
-        type="text"
-        class="search"
-        placeholder="Search by name"
-        v-model="searchQuery"
-      />
+      <input type="text" class="search" placeholder="Search by name" v-model="searchQuery" />
     </div>
     <div v-for="asteroid in filteredData" :key="asteroid.id">
       <Asteroids :asteroid="asteroid" />
@@ -45,13 +34,10 @@ onMounted(() => {
 });
 const fetchData = () => {
   isLoading.value = true;
-  // Sign up to https://api.nasa.gov/ to get full access to API via API KEY
   fetch(
-    `https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=${
-      process.env.VUE_APP_API_KEY
+    `https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=${process.env.VUE_APP_API_KEY
     }`
   )
-    // fetch(`https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=DEMO_KEY`)
     .then((res) => res.json())
     .then((res) => {
       let fetchedData = res.near_earth_objects[getDate()];
