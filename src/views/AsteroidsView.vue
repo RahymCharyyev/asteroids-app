@@ -7,18 +7,20 @@
     :changeDay="changeDay"
     :arrayLength="arrayLength"
   >
-    <input
-      type="text"
-      class="search"
-      placeholder="Search an asteroid by name"
-      v-model="searchQuery"
-    />
-    <button class="button" @click="sortedByDate = !sortedByDate">
-      {{ sortedByDate ? "Sort by Velocity" : "Sort by date" }}
-    </button>
-    <button class="button" @click="sortedByHazard = !sortedByHazard">
-      {{ sortedByHazard ? "Reset to all" : "Show Hazardous" }}
-    </button>
+    <div class="container">
+      <button class="button" @click="sortedByDate = !sortedByDate">
+        {{ sortedByDate ? "Sort by Velocity" : "Sort by date" }}
+      </button>
+      <button class="button" @click="sortedByHazard = !sortedByHazard">
+        {{ sortedByHazard ? "Reset to all" : "Show Hazardous" }}
+      </button>
+      <input
+        type="text"
+        class="search"
+        placeholder="Search by name"
+        v-model="searchQuery"
+      />
+    </div>
     <div v-for="asteroid in filteredData" :key="asteroid.id">
       <Asteroids :asteroid="asteroid" />
     </div>
@@ -44,23 +46,23 @@ onMounted(() => {
 const fetchData = () => {
   isLoading.value = true;
   // Sign up to https://api.nasa.gov/ to get full access to API via API KEY
-  // fetch(
-  //   `https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=${
-  //     process.env.VUE_APP_API_KEY
-  //   }`
-  // )
-  fetch(`https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=DEMO_KEY`)
+  fetch(
+    `https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=${
+      process.env.VUE_APP_API_KEY
+    }`
+  )
+    // fetch(`https://api.nasa.gov/neo/rest/v1/feed?end_date=${getDate()}&&api_key=DEMO_KEY`)
     .then((res) => res.json())
     .then((res) => {
       let fetchedData = res.near_earth_objects[getDate()];
       data.value = fetchedData;
-      isLoading.value = false;
     })
     .catch(() =>
       alert(
         "Sorry, we can't load the data from API. Please, try again later or check your internet connection"
       )
-    );
+    )
+    .finally(() => (isLoading.value = false));
 };
 
 const getDate = () => {
@@ -109,12 +111,17 @@ const arrayLength = computed(() => {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
 .search {
-  position: relative;
-  left: 72%;
   border: none;
   height: 30px;
-  width: 200px;
+  width: 147px;
   outline: none;
   border: 3px solid var(--primary);
   border-radius: 35px;
@@ -126,13 +133,11 @@ const arrayLength = computed(() => {
 }
 
 .button {
-  position: relative;
-  right: 27%;
   height: 35px;
   width: 150px;
   font-size: 14px;
   outline: none;
-  border: 3px solid var(--secondary);
+  border: none;
   border-radius: 35px;
   color: var(--primary);
   background-color: var(--secondary);
@@ -144,12 +149,26 @@ const arrayLength = computed(() => {
 }
 
 .button:hover {
-  font-size: 16px;
-  border: 3px solid var(--primary);
+  color: var(--secondary);
+  background-color: var(--primary);
 }
 
 .search:hover,
 .search:focus {
   border: 3px solid var(--secondary);
+}
+
+@media (max-width: 450px) {
+  .container {
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .button,
+  .search {
+    margin-top: 10px;
+    margin-right: 0;
+  }
 }
 </style>

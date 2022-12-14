@@ -7,6 +7,16 @@
   <router-view />
 </template>
 <style>
+@font-face {
+  font-family: "Ubuntu Mono";
+  font-weight: 400;
+  font-style: normal;
+  font-display: auto;
+  unicode-range: U+000-5FF;
+  src: local("Ubuntu Mono"), url("../fonts/UbuntuMono-Regular.ttf") format("ttf"),
+    url("../fonts/UbuntuMono-Bold.ttf") format("ttf");
+}
+
 :root {
   --primary: #fff;
   --secondary: #d6a505;
@@ -21,14 +31,15 @@ html {
   background-size: auto, cover;
   background-color: var(--background);
   width: 100%;
+  font-family: Ubuntu Mono;
 }
 
 body {
   position: relative;
   max-width: 42em;
   margin: 0 auto;
-  padding: 12px 20px 0 20px;
-  font-family: Ubuntu Mono;
+  padding: 0 20px 0 20px;
+
   font-size: 18px;
   color: var(--primary);
 }
@@ -97,6 +108,23 @@ nav a:hover {
 @media (max-width: 600px) {
   body {
     font-size: 16px;
+    padding: 0px 40px 0 40px;
+  }
+}
+
+@media (max-width: 450px) {
+  body {
+    font-size: 14px;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  nav a {
+    margin-top: 5px;
   }
 }
 </style>

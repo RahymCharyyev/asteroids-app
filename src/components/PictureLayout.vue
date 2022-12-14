@@ -9,16 +9,14 @@
 </template>
 
 <script setup>
-import { format, addDays } from "date-fns";
+import { format } from "date-fns";
 import { computed } from "vue";
 const props = defineProps({
   plusDay: Number,
   fetchData: {},
 });
-const title = computed(
-  () => `${format(addDays(new Date(), props.plusDay), "EEEE d-MMM")}`
-);
-const subtitle = computed(() => `*You can click on image to view it on actual size`);
+const title = computed(() => `${format(new Date(), "EEEE d-MMM")}`);
+const subtitle = computed(() => `* You can click on image to view it on actual size`);
 const footerName = computed(() => `© ${new Date().getFullYear()} developed by RC`);
 </script>
 
